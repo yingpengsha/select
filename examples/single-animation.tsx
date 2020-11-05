@@ -2,6 +2,7 @@
 import React from 'react';
 import Select, { Option } from '../src';
 import '../assets/index.less';
+import './single-animation.less';
 
 function onChange(value) {
   console.log(`selected ${value}`);
@@ -21,6 +22,9 @@ const Test = () => (
         animation="slide-up"
         showSearch
         onChange={onChange}
+        mobile={{
+          motionName: 'mobile-fade-up',
+        }}
       >
         <Option value="jack">
           <b

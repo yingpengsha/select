@@ -1,7 +1,9 @@
 import * as React from 'react';
-import Trigger from 'rc-trigger';
+import { useMemo } from 'react';
+import Trigger, { TriggerProps } from 'rc-trigger';
 import classNames from 'classnames';
 import { RenderDOMFunc } from './interface';
+import { MobileConfig } from './interface/generator';
 
 const getBuiltInPlacements = (dropdownMatchSelectWidth: number | boolean) => {
   // Enable horizontal overflow auto-adjustment when a custom dropdown width is provided
@@ -66,10 +68,12 @@ export interface SelectTriggerProps {
   dropdownAlign: object;
   empty: boolean;
 
+  mobile?: MobileConfig;
+
   getTriggerDOMNode: () => HTMLElement;
 }
 
-const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTriggerProps> = (
+const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTriggerProps> = (
   props,
   ref,
 ) => {
@@ -91,6 +95,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     getPopupContainer,
     empty,
     getTriggerDOMNode,
+    mobile,
     ...restProps
   } = props;
 
@@ -101,9 +106,28 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
     popupNode = dropdownRender(popupElement);
   }
 
-  const builtInPlacements = React.useMemo(() => getBuiltInPlacements(dropdownMatchSelectWidth), [
+  const builtInPlacements = useMemo(() => getBuiltInPlacements(dropdownMatchSelectWidth), [
     dropdownMatchSelectWidth,
   ]);
+
+  // ===================== Mobile ======================
+  const mobileConfig = useMemo(() => {
+    const config: TriggerProps['mobile'] = {
+      popupStyle: {
+        position: 'fixed',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        top: 'auto',
+      },
+      popupClassName: `${dropdownPrefixCls}-mobile`,
+      popupMotion: {
+        motionName: mobile?.motionName,
+      },
+    };
+
+    return config;
+  }, [mobile]);
 
   // ===================== Motion ======================
   const mergedTransitionName = animation ? `${dropdownPrefixCls}-${animation}` : transitionName;
@@ -144,6 +168,7 @@ const SelectTrigger: React.RefForwardingComponent<RefTriggerProps, SelectTrigger
       })}
       popupStyle={popupStyle}
       getTriggerDOMNode={getTriggerDOMNode}
+      mobile={mobileConfig}
     >
       {children}
     </Trigger>

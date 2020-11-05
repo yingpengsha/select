@@ -80,3 +80,7 @@ export type FlattenOptionsType<OptionsType extends object[] = object[]> = {
   /** Used for customize data */
   [name: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }[];
+
+export interface MobileConfig {
+  motionName?: string;
+}
