@@ -192,8 +192,8 @@ export interface GenerateConfig<OptionsType extends object[]> {
   /** Convert single raw value into { label, value } format. Will be called by each value */
   getLabeledValue: GetLabeledValue<FlattenOptionsType<OptionsType>>;
   filterOptions: FilterOptions<OptionsType>;
-  findValueOption: // Need still support legacy ts api
-  | ((values: RawValueType[], options: FlattenOptionsType<OptionsType>) => OptionsType)
+  findValueOption:  // Need still support legacy ts api
+    | ((values: RawValueType[], options: FlattenOptionsType<OptionsType>) => OptionsType)
     // New API add prevValueOptions support
     | ((
         values: RawValueType[],
@@ -328,7 +328,7 @@ export default function generateSelector<
     const useInternalProps = internalProps.mark === INTERNAL_PROPS_MARK;
 
     const domProps = omitDOMProps ? omitDOMProps(restProps) : restProps;
-    DEFAULT_OMIT_PROPS.forEach((prop) => {
+    DEFAULT_OMIT_PROPS.forEach(prop => {
       delete domProps[prop];
     });
 
@@ -338,8 +338,7 @@ export default function generateSelector<
     const listRef = useRef<RefOptionListProps>(null);
 
     const tokenWithEnter = useMemo(
-      () =>
-        (tokenSeparators || []).some((tokenSeparator) => ['\n', '\r\n'].includes(tokenSeparator)),
+      () => (tokenSeparators || []).some(tokenSeparator => ['\n', '\r\n'].includes(tokenSeparator)),
       [tokenSeparators],
     );
 
@@ -445,7 +444,7 @@ export default function generateSelector<
       });
       if (
         mode === 'tags' &&
-        filteredOptions.every((opt) => opt[optionFilterProp] !== mergedSearchValue)
+        filteredOptions.every(opt => opt[optionFilterProp] !== mergedSearchValue)
       ) {
         filteredOptions.unshift({
           value: mergedSearchValue,
@@ -681,7 +680,7 @@ export default function generateSelector<
 
         if (mode !== 'tags') {
           patchRawValues = patchLabels
-            .map((label) => {
+            .map(label => {
               const item = mergedFlattenOptions.find(
                 ({ data }) => data[mergedOptionLabelProp] === label,
               );
@@ -694,7 +693,7 @@ export default function generateSelector<
           new Set<RawValueType>([...mergedRawValue, ...patchRawValues]),
         );
         triggerChange(newRawValues);
-        newRawValues.forEach((newRawValue) => {
+        newRawValues.forEach(newRawValue => {
           triggerSelect(newRawValue, true, 'input');
         });
 
@@ -718,11 +717,9 @@ export default function generateSelector<
     // If menu is open, OptionList will take charge
     // If mode isn't tags, press enter is not meaningful when you can't see any option
     const onSearchSubmit = (searchText: string) => {
-      const newRawValues = Array.from(
-        new Set<RawValueType>([...mergedRawValue, searchText]),
-      );
+      const newRawValues = Array.from(new Set<RawValueType>([...mergedRawValue, searchText]));
       triggerChange(newRawValues);
-      newRawValues.forEach((newRawValue) => {
+      newRawValues.forEach(newRawValue => {
         triggerSelect(newRawValue, true, 'input');
       });
       setInnerSearchValue('');
@@ -849,7 +846,7 @@ export default function generateSelector<
     const activeTimeoutIds: number[] = [];
     useEffect(
       () => () => {
-        activeTimeoutIds.forEach((timeoutId) => clearTimeout(timeoutId));
+        activeTimeoutIds.forEach(timeoutId => clearTimeout(timeoutId));
         activeTimeoutIds.splice(0, activeTimeoutIds.length);
       },
       [],

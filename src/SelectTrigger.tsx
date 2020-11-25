@@ -112,6 +112,10 @@ const SelectTrigger: React.ForwardRefRenderFunction<RefTriggerProps, SelectTrigg
 
   // ===================== Mobile ======================
   const mobileConfig = useMemo(() => {
+    if (!mobile) {
+      return null;
+    }
+
     const config: TriggerProps['mobile'] = {
       popupStyle: {
         position: 'fixed',
