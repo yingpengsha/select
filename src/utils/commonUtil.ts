@@ -22,7 +22,7 @@ export function toInnerValue(
 ): [RawValueType[], Map<RawValueType, LabelValueType>] {
   const valueMap = new Map<RawValueType, LabelValueType>();
 
-  if (value === undefined || (value === '' && combobox)) {
+  if (value === undefined || value === null || (value === '' && combobox)) {
     return [[], valueMap];
   }
 
@@ -80,7 +80,7 @@ export function toOuterValues<FOT extends FlattenOptionsType>(
 
 export function removeLastEnabledValue<
   T extends { disabled?: boolean },
-  P extends RawValueType | object
+  P extends RawValueType | object,
 >(measureValues: T[], values: P[]): { values: P[]; removedValue: P } {
   const newValues = [...values];
 
